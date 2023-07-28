@@ -1,0 +1,1 @@
+UI --> Controllers(Can accept DTOs for needed data) --> Service(What to do with data) --> Use data in format of DTO and map to model to send/use on database --> Use DbContext to accualy use the database
