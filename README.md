@@ -1,9 +1,9 @@
 # NZWalks
 
-##The Problem
+## The Problem
 This is a APi that i am developing to provide information about walks and trials in New Zealand (with help of a udemy course)
 
-##My problem Solving
+## My problem Solving
 My aprouch is rather simple but effective with just 7 steps:
     1: Define the problem.
     2: Identify possible causes.
