@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "X:\\WORK\\Exceed IT\\Study\\API_practise\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj": {}
+    "X:\\WORK\\Study\\PersonalProjects\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj": {}
   },
   "projects": {
-    "X:\\WORK\\Exceed IT\\Study\\API_practise\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj": {
+    "X:\\WORK\\Study\\PersonalProjects\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "X:\\WORK\\Exceed IT\\Study\\API_practise\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj",
+        "projectUniqueName": "X:\\WORK\\Study\\PersonalProjects\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj",
         "projectName": "NZWalks.API",
-        "projectPath": "X:\\WORK\\Exceed IT\\Study\\API_practise\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj",
+        "projectPath": "X:\\WORK\\Study\\PersonalProjects\\NZWalks\\NZWalks\\NZWalks.API\\NZWalks.API.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "X:\\WORK\\Exceed IT\\Study\\API_practise\\NZWalks\\NZWalks\\NZWalks.API\\obj\\",
+        "outputPath": "X:\\WORK\\Study\\PersonalProjects\\NZWalks\\NZWalks\\NZWalks.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

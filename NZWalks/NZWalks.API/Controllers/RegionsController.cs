@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
+using NZWalks.API.Models.DTOs;
 
 namespace NZWalks.API.Controllers
 {
@@ -8,33 +10,116 @@ namespace NZWalks.API.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
+        private readonly NZWalksDbContext dbContext;
 
-        [HttpGet]
-        public IActionResult getALl()
+        public RegionsController(NZWalksDbContext dbContext)
         {
-            var regions = new List<Region>
+            this.dbContext = dbContext;
+        }
+
+        //Get all regions
+        //GET: https://localhost:portnumber/api/regions
+        [HttpGet]
+        public IActionResult getAll()
+        {
+            //Get data from database - Domain models
+            var regions = dbContext.Regions.Select(x => new RegionDTO 
             {
-                new Region
-                {
-                    Id = Guid.NewGuid(),
-                    FullName = "Auckland Region",
-                    Code = "AKL",
-                    RegionImageUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.aucklandcouncil.govt.nz%2Fparks-recreation%2Fget-outdoors%2Faklpaths%2FPages%2Fpath-detail.aspx%3FItemId%3D306&psig=AOvVaw1Gd553h_Bld0gB7TEEvfp6&ust=1690369078882000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPjBrt7ZqYADFQAAAAAdAAAAABAE"
+                Id = x.Id,
+                Code = x.Code,
+                FullName = x.FullName,
+                RegionImageUrl = x.RegionImageUrl
 
-                },
-
-                new Region
-                {
-                    Id = Guid.NewGuid(),
-                    FullName = "Wellington Region",
-                    Code = "WLG",
-                    RegionImageUrl = "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.myguide-cdn.com%2Fmd%2Fcontent%2F2%2Flarge%2Fbest-wellington-bike-trails-712661.jpg&tbnid=DvdxwnQM34bVvM&vet=12ahUKEwje0NOb2qmAAxWHpicCHe5EBKoQMygCegUIARC-AQ..i&imgrefurl=https%3A%2F%2Fwww.myguidewellington.com%2Ftravel-articles%2Fbest-wellington-bike-trails&docid=LsjMQ0umcqrahM&w=1200&h=600&q=wellington%20regional%20trails&ved=2ahUKEwje0NOb2qmAAxWHpicCHe5EBKoQMygCegUIARC-AQ"
-
-                }
-            };
-
+            }).ToList();
+            
+            //Retrun DTO
             return Ok(regions);
 
+        }
+
+        //Get region by ID
+        //GET: https://localhost:portnumber/api/regions/{id}
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public IActionResult getById([FromRoute] Guid id)
+        {
+            var region = dbContext.Regions.Where(x => x.Id == id).Select(x => new RegionDTO
+            {
+                Id = x.Id,
+                Code = x.Code,
+                FullName = x.FullName,
+                RegionImageUrl = x.RegionImageUrl
+
+            }).FirstOrDefault();
+
+            if (region is null)
+            {
+                return NotFound();
+            }
+                
+            return Ok(region);
+        }
+
+        //POST region
+        //POST: https://localhost:portnumber/api/regions
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateRegionDTO CreateRegionDTO)
+        {
+            //Map DTO to Model
+            var regionDomainModel = new Region
+            {
+                Code = CreateRegionDTO.Code,
+                FullName = CreateRegionDTO.FullName,
+                RegionImageUrl = CreateRegionDTO.RegionImageUrl,
+            };
+
+            //Use Domain model to create Region
+            dbContext.Regions.Add(regionDomainModel);
+            dbContext.SaveChanges();
+
+            //Map Domain model back to DTO
+            var regionDTO = new RegionDTO
+            { 
+                Id = regionDomainModel.Id,
+                Code = regionDomainModel.Code,  
+                FullName = regionDomainModel.FullName,
+                RegionImageUrl = regionDomainModel.RegionImageUrl,
+            };
+
+            return CreatedAtAction(nameof(getById), new { id = regionDTO.Id}, regionDTO);
+        }
+
+
+        //Update Regions
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionDTO updateRegionDTO)
+        {
+            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+
+            if(regionDomainModel is null)
+            {
+                return NotFound();
+            }
+
+            //Mad DTO to domain model
+
+            regionDomainModel.Code = updateRegionDTO.Code;
+            regionDomainModel.FullName = updateRegionDTO.FullName;
+            regionDomainModel.RegionImageUrl = updateRegionDTO.RegionImageUrl;
+
+            dbContext.SaveChanges();
+
+            //Convert DTO to model
+            var regionDTO = new RegionDTO
+            {
+                Id = regionDomainModel.Id,
+                Code = regionDomainModel.Code,
+                FullName = regionDomainModel.FullName,
+                RegionImageUrl = regionDomainModel.RegionImageUrl,
+            };
+
+            return Ok(regionDTO);
         }
     }
 }
